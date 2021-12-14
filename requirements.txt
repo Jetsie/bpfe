@@ -1,8 +1,6 @@
 Flask
 requests
-base64
 werkzeug
 bs4
 io
-re
 logging
