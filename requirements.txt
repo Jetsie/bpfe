@@ -1,7 +1,9 @@
 Flask
-Flask-RESTful
-gunicorn
-itsdangerous
-Jinja2
-peewee
-Werkzeug
+requests
+urllib
+base64
+werkzeug
+bs4
+io
+re
+logging
