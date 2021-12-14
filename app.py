@@ -23,8 +23,8 @@ except ImportError:
 log = logging.getLogger('werkzeug')
 log.disabled = True
 
-ourScheme = "http"
-ourNetloc = "127.0.0.1:5000"
+ourScheme = "https"
+ourNetloc = "https://bpfe.herokuapp.com/"
 
 domainParam = 'bpdev' # The domain parameter is the base64 encoded url of the site we want to visit
 with open('inject.js', 'r') as f: # Read the inject.js file and set it to the js to inject into the html to fix it.
