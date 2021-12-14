@@ -3,3 +3,4 @@ gunicorn
 requests
 werkzeug
 bs4
+brotli
