@@ -1,6 +1,5 @@
 Flask
 requests
-urllib
 base64
 werkzeug
 bs4
