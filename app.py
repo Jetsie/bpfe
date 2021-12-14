@@ -67,6 +67,7 @@ def requester(url, request):
         urlParsed = urlparse(url)
         modHeaders.set('Host', urlParsed.netloc)
         modHeaders.set('Orgin', f'{urlParsed.scheme}://{urlParsed.netloc}')
+        modHeaders.set('Server', 'Garlic')
 
         # Make the request
         sent = requests.get(url, headers=modHeaders, allow_redirects=False)

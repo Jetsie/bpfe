@@ -1,3 +1,3 @@
 @echo off
-venv\Scripts\activate && set FLASK_APP=main.py && flask run
+venv\Scripts\activate && set FLASK_APP=app.py && flask run
 pause
