@@ -23,7 +23,7 @@ except ImportError:
 log = logging.getLogger('werkzeug')
 log.disabled = True
 
-ourScheme = "https"
+ourScheme = "https:"
 ourNetloc = "https://bpfe.herokuapp.com/"
 
 domainParam = 'bpdev' # The domain parameter is the base64 encoded url of the site we want to visit
