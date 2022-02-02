@@ -27,6 +27,7 @@ ourScheme = "https:"
 ourNetloc = "https://bpfe.herokuapp.com/"
 
 domainParam = 'bpdev' # The domain parameter is the base64 encoded url of the site we want to visit
+
 with open('inject.js', 'r') as f: # Read the inject.js file and set it to the js to inject into the html to fix it.
     injectJS = f.read()
 
@@ -39,10 +40,8 @@ methods = ['GET', 'POST']
 @app.route('/<path:path>', methods=methods)
 def garlic(path):
     bpdev = request.args.get(domainParam)
-    if not bpdev:
-        # Replace this to make a homepage
-        print(request.url)
-        return 'Homepage!'
+    if not bpdev: # No path was specified, return a homepage.
+        return 'Homepage!' # Replace this to make a better homepage
     else:
         # Parse the query string and format for our client
         parsed = urlparse(request.url)
@@ -67,7 +66,6 @@ def requester(url, request):
         urlParsed = urlparse(url)
         modHeaders.set('Host', urlParsed.netloc)
         modHeaders.set('Orgin', f'{urlParsed.scheme}://{urlParsed.netloc}')
-        modHeaders.set('Server', 'Garlic')
 
         # Make the request
         sent = requests.get(url, headers=modHeaders, allow_redirects=False)
