@@ -19,8 +19,6 @@ log.disabled = True
 ourScheme = "https:"
 ourNetloc = "https://bpfe.herokuapp.com/"
 
-domainParam = 'bpdev' # The domain parameter is the base64 encoded url of the site we want to visit
-
 with open('inject.js', 'r') as f: # Read the inject.js file and set it to the js to inject into the html to fix it.
     injectJS = f.read()
 
@@ -32,7 +30,7 @@ methods = ['GET', 'POST']
 @app.route('/', defaults={'path': ''}, methods=methods)
 @app.route('/<path:path>', methods=methods)
 def garlic(path):
-    bpdev = request.args.get(domainParam)
+    bpdev = request.args.get('bpdev')
     if not bpdev: # No path was specified, return a homepage.
         return 'Homepage!' # Replace this to make a better homepage
     else:
@@ -42,12 +40,12 @@ def garlic(path):
         
         request_url = urlparse(request.url)
 
-        # Remove the "domainParam" from the query string
+        # Remove bpdev from the query string
         queries = parse_qs(request_url.query, keep_blank_values=True)
-        queries.pop(domainParam, None)
+        queries.pop('bpdev', None)
         request_url = request_url._replace(query=urlencode(queries, True))
 
-        # Change the scheme and domain to "domainParam" domain
+        # Change the scheme and domain to "bpdev" domain
         new_url = request_url._replace(netloc=bpdev_parsed.netloc.decode("utf-8"), scheme=bpdev_parsed.scheme.decode("utf-8"))
         
         # Re-build the url
@@ -69,7 +67,7 @@ def requester(url, request):
             soup = BeautifulSoup(sent.text, 'html.parser')
 
             tag = soup.new_tag("script")
-            tag.string = injectJS%(domainParam, urlParsed.hostname, urlParsed.scheme)
+            tag.string = injectJS%('bpdev', urlParsed.hostname, urlParsed.scheme)
             
             soup.body.insert_after(tag)
 
@@ -151,7 +149,7 @@ def toHeaders(d):
 def toFormattedUrl(url):
     parsed = urlparse(url)
 
-    param = {domainParam: b64encode((parsed.scheme + "://" + parsed.netloc).encode('utf-8'))}
+    param = {'bpdev': b64encode((parsed.scheme + "://" + parsed.netloc).encode('utf-8'))}
     query = parsed.query
     url_dict = dict(parse_qs(query))
     url_dict.update(param)
