@@ -9,15 +9,8 @@ from bs4 import BeautifulSoup
 from io import BytesIO
 import re
 import logging
-
-
-# Requests will still run without brotli, but it will give us compressed data.
-# To ensure working html we need to be able to decompress it. Fail if not installed.
-try:
-    import brotli
-    del brotli
-except ImportError:
-    raise RuntimeError("Brotli compression is needed. Install brotli.")
+import brotli
+del brotli
 
 # Disable flask verbose logging
 log = logging.getLogger('werkzeug')
@@ -43,21 +36,22 @@ def garlic(path):
     if not bpdev: # No path was specified, return a homepage.
         return 'Homepage!' # Replace this to make a better homepage
     else:
-        # Parse the query string and format for our client
-        parsed = urlparse(request.url)
+        # Decode bpdev
+        bpdev = b64decode(bpdev)
+        bpdev_parsed = urlparse(bpdev)
+        
+        request_url = urlparse(request.url)
 
         # Remove the "domainParam" from the query string
-        queries = parse_qs(parsed.query, keep_blank_values=True)
+        queries = parse_qs(request_url.query, keep_blank_values=True)
         queries.pop(domainParam, None)
-        parsed = parsed._replace(query=urlencode(queries, True))
+        request_url = request_url._replace(query=urlencode(queries, True))
 
         # Change the scheme and domain to "domainParam" domain
-        domain = urlparse(b64decode(bpdev))
-        parsed = parsed._replace(netloc=domain.netloc.decode("utf-8"), scheme=domain.scheme.decode("utf-8"))
+        new_url = request_url._replace(netloc=bpdev_parsed.netloc.decode("utf-8"), scheme=bpdev_parsed.scheme.decode("utf-8"))
         
         # Re-build the url
-        url = urlunparse(parsed)
-        return requester(url, request)
+        return requester(urlunparse(request_url), request)
 
 def requester(url, request):
     if request.method == 'GET':
