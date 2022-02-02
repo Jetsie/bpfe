@@ -42,7 +42,7 @@ def garlic(path):
     if not bpdev:
         # Replace this to make a homepage
         print(request.url)
-        return redirect(toFormattedUrl('https://www.google.com'), code=418)
+        return 'Homepage!'
     else:
         # Parse the query string and format for our client
         parsed = urlparse(request.url)
