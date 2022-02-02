@@ -45,12 +45,12 @@ def garlic(path):
         request_url = request_url._replace(query=urlencode(queries, True))
 
         # Change the scheme and domain to "bpdev" domain
-        new_url = request_url._replace(netloc=bpdev_parsed.netloc.decode("utf-8"), scheme=bpdev_parsed.scheme.decode("utf-8"))
+        new_url = urlunparse(request_url._replace(netloc=bpdev_parsed.netloc.decode("utf-8"), scheme=bpdev_parsed.scheme.decode("utf-8")))
         
-        print(f'Requested {str(request.url)}, parsed as requested url: {urlunparse(new_url)}')
+        print(f'{str(request.url)} --> {new_url}')
         
         # Re-build the url
-        return requester(urlunparse(new_url), request)
+        return requester(new_url, request)
 
 def requester(url, request):
     if request.method == 'GET':
