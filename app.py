@@ -34,19 +34,20 @@ def garlic(path):
     if not bpdev: # No path was specified, return a homepage.
         return 'Homepage!' # Replace this to make a better homepage
     else:
-        # Decode bpdev
-        bpdev = b64decode(bpdev)
+        # We have been requested to make a request on a users behalf, lets extract the target first
+        bpdev = b64decode(bpdev) # Decode bpdev
         bpdev_parsed = urlparse(bpdev)
         
         request_url = urlparse(request.url)
 
-        # Remove bpdev from the query string
         queries = parse_qs(request_url.query, keep_blank_values=True)
-        queries.pop('bpdev', None)
+        queries.pop('bpdev', None) # Remove bpdev from the query string
         request_url = request_url._replace(query=urlencode(queries, True))
 
         # Change the scheme and domain to "bpdev" domain
         new_url = request_url._replace(netloc=bpdev_parsed.netloc.decode("utf-8"), scheme=bpdev_parsed.scheme.decode("utf-8"))
+        
+        print(f'Requested {str(request.url)}, parsed as requested url: {urlunparse(new_url)}')
         
         # Re-build the url
         return requester(urlunparse(new_url), request)
