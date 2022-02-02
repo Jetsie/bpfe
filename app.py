@@ -49,7 +49,7 @@ def garlic(path):
         new_url = request_url._replace(netloc=bpdev_parsed.netloc.decode("utf-8"), scheme=bpdev_parsed.scheme.decode("utf-8"))
         
         # Re-build the url
-        return requester(urlunparse(request_url), request)
+        return requester(urlunparse(new_url), request)
 
 def requester(url, request):
     if request.method == 'GET':
