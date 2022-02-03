@@ -98,6 +98,9 @@ def requester(url, request):
 
         # Disable user-side compression ***CAN BE BETTER IF WE LEAVE IT ALONE AND JUST SEND THE RECOMPRESSED STUFF***
         h = dict(sent.headers)
+        
+        print(h)
+        
         deleteHeader(h, 'Content-Encoding')
         deleteHeader(h, 'Referer')
         deleteHeader(h, 'Content-Security-Policy')
